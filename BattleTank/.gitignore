@@ -75,3 +75,17 @@ Plugins/*/Intermediate/*
 
 # Cache files for the editor to use
 DerivedDataCache/*
+
+######################
+# VS Generated Files #
+######################
+*VC.db
+*VC.opendb
+*VC.db-shm
+*VC.db-wal
+*.suo
+*.sln
+
+# Content files
+*/Content/StarterContent/Textures/*
+*/Content/StarterContent/HDRI/*
