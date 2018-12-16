@@ -87,5 +87,5 @@ DerivedDataCache/*
 *.sln
 
 # Content files
-*/Content/StarterContent/Textures/*
-*/Content/StarterContent/HDRI/*
+*Content/StarterContent/Textures/*
+*Content/StarterContent/HDRI/*
