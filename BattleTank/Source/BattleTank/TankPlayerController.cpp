@@ -37,15 +37,14 @@ void ATankPlayerController::Tick(float DeltaTime)
 
 void ATankPlayerController::AimTowardsCrosshair()
 {
-	if (!GetControlledTank())
-	{
-		return;
-	}
+	if (!GetControlledTank()) { return;	}
+
 	FVector HitLocation;
 	if (GetSightRayHitLocation(HitLocation)) //Has "side-effect" - it line traces
 	{
-		UE_LOG(LogTemp, Warning, TEXT("HitLocation: %s"), *HitLocation.ToString());
+		UE_LOG(LogTemp, Warning, TEXT("Hit Location: %s"), *HitLocation.ToString());
 		// get world location if linetrace through crosshair
+		GetControlledTank()->AimAt(HitLocation);
 		// If it hits the landscape
 			//TODO Tell the controlled tank to aim at this point
 	}
@@ -54,13 +53,59 @@ void ATankPlayerController::AimTowardsCrosshair()
 //Get world location of linetrace through crosshair, true if i
 bool ATankPlayerController::GetSightRayHitLocation(FVector &HitLocation) const
 {
-	//ATank* TheTank = GetControlledTank();
-	//TheTank->GetComponentsByTag
-	//GetWorld()->GetGameViewport()->
-	HitLocation = FVector(1.0);
-	// if hit, return true and set the HitLocation value
+	
+	// From instructor: Find the crosshair projection
+	int32 ViewportSizeX, ViewportSizeY;
+	GetViewportSize(ViewportSizeX, ViewportSizeY);
+	// de-project the screen position of the crosshair to a world direction
+	FVector2D ScreenLocation = FVector2D(CrossHairXLocation*ViewportSizeX, CrossHairYLocation*ViewportSizeY);
+	//UE_LOG(LogTemp, Warning, TEXT("ScreenLocation: %s"), *ScreenLocation.ToString());
+	FVector LookDirection;
+	if (GetLookDirection(ScreenLocation, LookDirection))
+	{
+		// line-trace along that look direction and see what we hit (up to max range)
+		UE_LOG(LogTemp, Warning, TEXT("LookDirection: %s"), *LookDirection.ToString());
+		if (GetLookVectorHitLocation(LookDirection, HitLocation))
+		{
+			
+		}
+	}
+
+	// My notes: if hit, return true and set the HitLocation value
 	// draw a line from gun barrel through dot to infinity
 	// get actors that intersect line by checking points within a volume.
 	return true;
 }
 
+// Get the direction the reticle is facing
+bool ATankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector& LookDirection) const
+{
+	FVector CameraWorldLocation; // unneeded
+	return DeprojectScreenPositionToWorld(ScreenLocation.X, ScreenLocation.Y, CameraWorldLocation, LookDirection);
+}
+
+bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection, FVector &HitLocation) const
+{
+		// calculate the reach
+
+	auto StartLocation = PlayerCameraManager->GetCameraLocation();
+
+
+	FVector RotatorVector = LookDirection*LineTraceRange;
+	FVector LineTraceEnd = StartLocation + RotatorVector;
+	FHitResult ObjectHit;
+	if (GetWorld()->LineTraceSingleByChannel(
+		OUT ObjectHit, 
+		StartLocation, 
+		LineTraceEnd, 
+		ECollisionChannel::ECC_Visibility)) //line trace succeeds
+		{
+			//set hit location
+			HitLocation = ObjectHit.Location;
+			return true;
+		}
+		return false; // line trace didn't succeed
+//	UE_LOG(LogTemp, Warning, TEXT("Line trace end: %s"), *LineTraceEnd.ToString());
+	
+
+}
