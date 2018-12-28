@@ -40,3 +40,10 @@ void ATankAIController::BeginPlay()
 	ATank* ThisTank = GetControlledTank();
 	ATank* PlayerTank = GetPlayerTank();
 }
+
+// Tick Called every frame
+void ATankAIController::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+}
