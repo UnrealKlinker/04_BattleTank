@@ -8,7 +8,7 @@
 ATank* ATankAIController::GetControlledTank() const
 {
 	auto *ThisTank = Cast<ATank>(GetPawn());
-
+	UE_LOG(LogTemp, Warning, TEXT("Found AI tank %s."), *(ThisTank->GetName()));
 	return ThisTank;
 }
 
@@ -20,6 +20,9 @@ ATank * ATankAIController::GetPlayerTank() const
 	{
 		TheTank = Cast<ATank>(PlayerController->GetPawn());
 		/// UE_LOG(LogTemp, Warning, TEXT("Found player tank %s."), *(TheTank->GetName()));
+	}
+	else {
+		UE_LOG(LogTemp, Warning, TEXT("Can't find player tank."));
 	}
 	return TheTank;
 }
@@ -37,7 +40,7 @@ void ATankAIController::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	ATank* ThisTank = GetControlledTank();
 	ATank* PlayerTank = GetPlayerTank();
-	if (ThisTank && PlayerState)
+	if (ThisTank && PlayerTank)
 	{
 		// TODO Move towards the player
 		// Aim towards the player
