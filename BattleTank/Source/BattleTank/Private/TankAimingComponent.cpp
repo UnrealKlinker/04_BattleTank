@@ -1,6 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #include "../Public/TankAimingComponent.h"
-#include "Components/StaticMeshComponent.h"
+#include "../Public/TankBarrel.h"
 #include "Kismet/GameplayStatics.h"
 #include "Containers/Array.h"
 
@@ -16,7 +16,7 @@ UTankAimingComponent::UTankAimingComponent()
 
 
 
-void UTankAimingComponent::SetBarrelReference(UStaticMeshComponent * BarrelToSet)
+void UTankAimingComponent::SetBarrelReference(UTankBarrel * BarrelToSet)
 {
 	Barrel = BarrelToSet;
 }
@@ -58,21 +58,18 @@ void UTankAimingComponent::AimAt(FVector TargetLocation, float LaunchSpeed) cons
 		AimBarrelTowards(AimDirection);
 
 		auto BarrelLocation = Barrel->GetComponentLocation();
-		UE_LOG(LogTemp, Warning, TEXT("%s's barrel at %s, is aiming at: %s with launch speed %f"), *GetOwner()->GetName(), *AimDirection.ToString(), *TargetLocation.ToString(), OutLaunchVelocity);
+		//UE_LOG(LogTemp, Warning, TEXT("%s's barrel at %s, is aiming at: %s with launch speed %f"), *GetOwner()->GetName(), *AimDirection.ToString(), *TargetLocation.ToString(), LaunchSpeed);
 		// Move Barrel
 
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT(" %s, can't find a projectile velocity"), *GetOwner()->GetName());
 	}
 }
 
 void UTankAimingComponent::AimBarrelTowards(const FVector AimDirection) const
 {
-	// Turn the turret and then elevate or depress the barrel
-    // Use the blueprint to contrl the speed of the move - frame independent
+	// Work out the difference between the current barrel rotation and aim direction
 	auto BarrelRotator = Barrel->GetForwardVector().Rotation();
 	auto AimAsRotator = AimDirection.Rotation();
-	UE_LOG(LogTemp, Warning, TEXT("AimAsRotator: %s"), *AimAsRotator.ToString());
+	auto DeltaRotator = AimAsRotator - BarrelRotator;
+	//UE_LOG(LogTemp, Warning, TEXT("AimAsRotator delta: %s"), *DeltaRotator.ToString());
+	Barrel->Elevate(5); // TODO remove magic number from barrel elevation
 }

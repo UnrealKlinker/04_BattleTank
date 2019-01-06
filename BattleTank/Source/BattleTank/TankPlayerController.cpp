@@ -8,12 +8,10 @@ ATank* ATankPlayerController::GetControlledTank() const
 	auto *TheTank = Cast<ATank>(GetPawn());
 	if (TheTank)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("PlayerController controlled tank: %s"), *(TheTank->GetName()));
+		///UE_LOG(LogTemp, Warning, TEXT("PlayerController controlled tank: %s"), *(TheTank->GetName()));
 
 	}
-	else {
-		UE_LOG(LogTemp, Warning, TEXT("ATankPlayerController pawn not possessing a tank."));
-	}
+
 	return TheTank;
 }
 
@@ -21,7 +19,7 @@ ATank* ATankPlayerController::GetControlledTank() const
 void ATankPlayerController::BeginPlay() 
 {
 	Super::BeginPlay();
-	UE_LOG(LogTemp, Warning, TEXT("PlayerController Begin Play"));
+	///UE_LOG(LogTemp, Warning, TEXT("PlayerController Begin Play"));
 	ATank* TheTank = GetControlledTank();
 }
 
@@ -29,7 +27,7 @@ void ATankPlayerController::BeginPlay()
 void ATankPlayerController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	UE_LOG(LogTemp, Warning, TEXT("PlayerController Tick"));
+	//UE_LOG(LogTemp, Warning, TEXT("PlayerController Tick"));
 
 	// Aim towards crosshair
 	AimTowardsCrosshair();
@@ -42,7 +40,7 @@ void ATankPlayerController::AimTowardsCrosshair()
 	FVector HitLocation;
 	if (GetSightRayHitLocation(HitLocation)) //Has "side-effect" - it line traces
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Hit Location: %s"), *HitLocation.ToString());
+		//UE_LOG(LogTemp, Warning, TEXT("Hit Location: %s"), *HitLocation.ToString());
 		// get world location if linetrace through crosshair
 		GetControlledTank()->AimAt(HitLocation);
 		// If it hits the landscape
@@ -64,7 +62,7 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector &HitLocation) const
 	if (GetLookDirection(ScreenLocation, LookDirection))
 	{
 		// line-trace along that look direction and see what we hit (up to max range)
-		UE_LOG(LogTemp, Warning, TEXT("LookDirection: %s"), *LookDirection.ToString());
+		///UE_LOG(LogTemp, Warning, TEXT("LookDirection: %s"), *LookDirection.ToString());
 		if (GetLookVectorHitLocation(LookDirection, HitLocation))
 		{
 			
