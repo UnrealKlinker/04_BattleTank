@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #include "../Public/TankAimingComponent.h"
 #include "../Public/TankBarrel.h"
+#include "Components/ActorComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Containers/Array.h"
 
@@ -58,9 +59,15 @@ void UTankAimingComponent::AimAt(FVector TargetLocation, float LaunchSpeed) cons
 		AimBarrelTowards(AimDirection);
 
 		auto BarrelLocation = Barrel->GetComponentLocation();
-		//UE_LOG(LogTemp, Warning, TEXT("%s's barrel at %s, is aiming at: %s with launch speed %f"), *GetOwner()->GetName(), *AimDirection.ToString(), *TargetLocation.ToString(), LaunchSpeed);
+		auto Time = GetWorld()->GetTimeSeconds();
+		UE_LOG(LogTemp, Warning, TEXT("%f: Aim solution found, %s's barrel at %s, is aiming at: %s with launch speed %f"), Time, *GetOwner()->GetName(), *AimDirection.ToString(), *TargetLocation.ToString(), LaunchSpeed);
 		// Move Barrel
 
+	} 
+	else
+	{
+		auto Time = GetWorld()->GetTimeSeconds();
+		UE_LOG(LogTemp, Warning, TEXT("%f: No aim solution found"), Time);
 	}
 }
 

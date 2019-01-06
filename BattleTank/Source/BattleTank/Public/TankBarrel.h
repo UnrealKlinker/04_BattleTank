@@ -3,8 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/StaticMeshComponent.h"
 #include "TankBarrel.generated.h"
+
+class UStaticMeshComponent;
 
 /**
  * Used to elevate the tank barrel
