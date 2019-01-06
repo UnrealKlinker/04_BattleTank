@@ -1,6 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-
 #include "../Public/TankAimingComponent.h"
+#include "Components/StaticMeshComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "Containers/Array.h"
 
 // Sets default values for this component's properties
 UTankAimingComponent::UTankAimingComponent()
@@ -13,25 +15,64 @@ UTankAimingComponent::UTankAimingComponent()
 }
 
 
-// Called when the game starts
-void UTankAimingComponent::BeginPlay()
-{
-	Super::BeginPlay();
 
-	// ...
-	
+void UTankAimingComponent::SetBarrelReference(UStaticMeshComponent * BarrelToSet)
+{
+	Barrel = BarrelToSet;
 }
 
-
-// Called every frame
-void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+void UTankAimingComponent::AimAt(FVector TargetLocation, float LaunchSpeed) const
 {
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+	if (!Barrel)
+	{
+		return;
+	}
 
-	// ...
+	FVector OutLaunchVelocity(0); // intialized to 0,0,0
+	FVector StartLocation = Barrel->GetSocketLocation(FName("Muzzle")); // socket for the end of the barrel
+	bool HighArc = false;
+	float CollisionRadius = 0.f; // assume 120 mm cannon
+	float OverrideGravity = 0.f; // 0 to not override gravity.
+	bool DrawDebug = false;
+	FCollisionResponseParams ResponseParam;
+	TArray <AActor *>  ActorsToIgnore;
+	bool bHaveAimSolution = UGameplayStatics::SuggestProjectileVelocity
+	(
+		GetWorld(),
+		OutLaunchVelocity,
+		StartLocation,
+		TargetLocation,
+		LaunchSpeed,
+		HighArc,
+		CollisionRadius,
+		OverrideGravity,
+		ESuggestProjVelocityTraceOption::DoNotTrace, /// currently need do not trace to prevent a bug
+		ResponseParam,
+		ActorsToIgnore);
+	if (bHaveAimSolution)
+	{
+		// Calculate the out launch velocity
+		// turn into a unit vector using . safe normal
+
+		FVector AimDirection = OutLaunchVelocity.GetSafeNormal();
+		AimBarrelTowards(AimDirection);
+
+		auto BarrelLocation = Barrel->GetComponentLocation();
+		UE_LOG(LogTemp, Warning, TEXT("%s's barrel at %s, is aiming at: %s with launch speed %f"), *GetOwner()->GetName(), *AimDirection.ToString(), *TargetLocation.ToString(), OutLaunchVelocity);
+		// Move Barrel
+
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT(" %s, can't find a projectile velocity"), *GetOwner()->GetName());
+	}
 }
 
-void UTankAimingComponent::AimAt(FVector TargetLocation) const
+void UTankAimingComponent::AimBarrelTowards(const FVector AimDirection) const
 {
-	UE_LOG(LogTemp, Warning, TEXT("%s aiming at: %s"), *GetOwner()->GetName(), *TargetLocation.ToString());
+	// Turn the turret and then elevate or depress the barrel
+    // Use the blueprint to contrl the speed of the move - frame independent
+	auto BarrelRotator = Barrel->GetForwardVector().Rotation();
+	auto AimAsRotator = AimDirection.Rotation();
+	UE_LOG(LogTemp, Warning, TEXT("AimAsRotator: %s"), *AimAsRotator.ToString());
 }

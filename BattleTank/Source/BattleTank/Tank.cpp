@@ -13,7 +13,12 @@ ATank::ATank()
 void ATank::AimAt(FVector TargetLocation)
 {
 	auto OurTankName = GetName();
-	TankAimingComponent->AimAt(TargetLocation);
+	TankAimingComponent->AimAt(TargetLocation, LaunchSpeed);
+}
+
+void ATank::SetBarrelReference(UStaticMeshComponent * BarrelToSet)
+{
+	TankAimingComponent->SetBarrelReference(BarrelToSet);
 }
 
 // Called when the game starts or when spawned

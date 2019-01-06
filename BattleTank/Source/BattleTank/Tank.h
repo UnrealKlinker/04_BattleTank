@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "TankAimingComponent.h"
+#include "Public/TankAimingComponent.h"
 #include "GameFramework/Pawn.h"
 #include "Tank.generated.h" // must be last include
 
@@ -16,6 +16,8 @@ public:
 	// Sets default values for this pawn's properties
 	ATank();
 	void AimAt(FVector TargetLocation);
+	UFUNCTION(BlueprintCallable, Category = Setup)
+	void SetBarrelReference(UStaticMeshComponent *BarrelToSet);
 
 protected:
 	// Called when the game starts or when spawned
@@ -29,4 +31,8 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+private:
+	UPROPERTY(EditAnywhere, Category=Firing)
+	//TODO Find reasonable default for cannon velocity
+	float LaunchSpeed = 100000; // speed in cm/s
 };
