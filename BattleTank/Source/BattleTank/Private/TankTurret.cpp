@@ -13,7 +13,7 @@ void UTankTurret::Rotate(float RelativeSpeed)
 	
 	FRotator NewRelativeRotation = FRotator(RelativeRotation.Pitch, NewRotation, RelativeRotation.Roll);
 	auto Time = GetWorld()->GetTimeSeconds();
-	UE_LOG(LogTemp, Warning, TEXT("%f Aim solution found %f turret rotation"), Time,  NewRotation);
+	//UE_LOG(LogTemp, Warning, TEXT("%f Aim solution found %f turret rotation"), Time,  NewRotation);
 	SetRelativeRotation(NewRelativeRotation, 0, 0);
 }
 

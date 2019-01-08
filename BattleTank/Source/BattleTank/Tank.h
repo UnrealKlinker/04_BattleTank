@@ -24,16 +24,15 @@ public:
 	void SetBarrelReference(UTankBarrel *BarrelToSet);
 	UFUNCTION(BlueprintCallable, Category = Setup)
 	void SetTurretReference(UTankTurret *TurretToSet);
+	UFUNCTION(BlueprintCallable)
+	void Fire();
+	// Called to bind functionality to input
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	UTankAimingComponent* TankAimingComponent = nullptr;
-
-public:	
-
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 private:
 	UPROPERTY(EditAnywhere, Category=Firing)

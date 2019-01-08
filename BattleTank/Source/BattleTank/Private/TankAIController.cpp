@@ -9,7 +9,7 @@
 ATank* ATankAIController::GetControlledTank() const
 {
 	auto *ThisTank = Cast<ATank>(GetPawn());
-	UE_LOG(LogTemp, Warning, TEXT("Found AI tank %s."), *(ThisTank->GetName()));
+	///UE_LOG(LogTemp, Warning, TEXT("Found AI tank %s."), *(ThisTank->GetName()));
 	return ThisTank;
 }
 

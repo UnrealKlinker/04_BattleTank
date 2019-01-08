@@ -34,7 +34,6 @@ void ATank::BeginPlay()
 	
 }
 
-
 // Called to bind functionality to input
 void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
@@ -42,3 +41,8 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
+void ATank::Fire()
+{
+	//TODO Fire a shell at the target
+	UE_LOG(LogTemp, Warning, TEXT("Firing cannon."));
+}
