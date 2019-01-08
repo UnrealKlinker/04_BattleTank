@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #include "../Public/TankAimingComponent.h"
 #include "../Public/TankBarrel.h"
+#include "../Public/TankTurret.h"
 #include "Components/ActorComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Containers/Array.h"
@@ -19,7 +20,20 @@ UTankAimingComponent::UTankAimingComponent()
 
 void UTankAimingComponent::SetBarrelReference(UTankBarrel * BarrelToSet)
 {
+	if (!BarrelToSet)
+	{
+		return;
+	}
 	Barrel = BarrelToSet;
+}
+
+void UTankAimingComponent::SetTurretReference(UTankTurret * TurretToSet)
+{
+	if (!TurretToSet)
+	{
+		return;
+	}
+	Turret = TurretToSet;
 }
 
 void UTankAimingComponent::AimAt(FVector TargetLocation, float LaunchSpeed) const
@@ -60,23 +74,29 @@ void UTankAimingComponent::AimAt(FVector TargetLocation, float LaunchSpeed) cons
 
 		auto BarrelLocation = Barrel->GetComponentLocation();
 		auto Time = GetWorld()->GetTimeSeconds();
-		UE_LOG(LogTemp, Warning, TEXT("%f: Aim solution found, %s's barrel at %s, is aiming at: %s with launch speed %f"), Time, *GetOwner()->GetName(), *AimDirection.ToString(), *TargetLocation.ToString(), LaunchSpeed);
+		//UE_LOG(LogTemp, Warning, TEXT("%f: Aim solution found, %s's barrel at %s, is aiming at: %s with launch speed %f"), Time, *GetOwner()->GetName(), *AimDirection.ToString(), *TargetLocation.ToString(), LaunchSpeed);
 		// Move Barrel
 
 	} 
 	else
 	{
 		auto Time = GetWorld()->GetTimeSeconds();
-		UE_LOG(LogTemp, Warning, TEXT("%f: No aim solution found"), Time);
+		//UE_LOG(LogTemp, Warning, TEXT("%f: No aim solution found"), Time);
 	}
 }
 
 void UTankAimingComponent::AimBarrelTowards(const FVector AimDirection) const
 {
+	if (!Barrel || !Turret)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Turret or Barrel is null"));
+		return;
+	}
 	// Work out the difference between the current barrel rotation and aim direction
 	auto BarrelRotator = Barrel->GetForwardVector().Rotation();
 	auto AimAsRotator = AimDirection.Rotation();
 	auto DeltaRotator = AimAsRotator - BarrelRotator;
 	//UE_LOG(LogTemp, Warning, TEXT("AimAsRotator delta: %s"), *DeltaRotator.ToString());
 	Barrel->Elevate(DeltaRotator.Pitch); // TODO remove magic number from barrel elevation
+	Turret->Rotate(DeltaRotator.Yaw);
 }

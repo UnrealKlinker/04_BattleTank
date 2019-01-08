@@ -2,7 +2,6 @@
 
 #include "TankBarrel.h"
 #include "Math/UnrealMathUtility.h"
-#include "Components/StaticMeshComponent.h"
 
 void UTankBarrel::Elevate(float RelativeSpeed)
 {

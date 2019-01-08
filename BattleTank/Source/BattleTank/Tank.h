@@ -8,6 +8,7 @@
 
 // forward declarations
 class UTankBarrel;
+class UTankTurret;
 class UTankAimingComponent;
 
 UCLASS()
@@ -21,6 +22,8 @@ public:
 	void AimAt(FVector TargetLocation);
 	UFUNCTION(BlueprintCallable, Category = Setup)
 	void SetBarrelReference(UTankBarrel *BarrelToSet);
+	UFUNCTION(BlueprintCallable, Category = Setup)
+	void SetTurretReference(UTankTurret *TurretToSet);
 
 protected:
 	// Called when the game starts or when spawned
