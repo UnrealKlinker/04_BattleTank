@@ -10,6 +10,7 @@
 class UTankBarrel;
 class UTankTurret;
 class UTankAimingComponent;
+class AProjectile;
 
 UCLASS()
 class BATTLETANK_API ATank : public APawn
@@ -38,4 +39,11 @@ private:
 	UPROPERTY(EditAnywhere, Category=Firing)
 	//TODO Find reasonable default for cannon velocity
 	float LaunchSpeed = 100000; // speed in cm/s
+
+	UPROPERTY(EditAnywhere, Category = Setup)
+	//TODO Find reasonable default for cannon velocity
+	TSubclassOf<AProjectile> ProjectileBlueprint; // consider https://docs.unrealengine.com/latest/INT/Programming/UnrealArchitecture/TSubclassOf
+
+	// Local barrel reference
+	UTankBarrel* Barrel = nullptr;
 };
