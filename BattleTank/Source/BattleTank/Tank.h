@@ -40,6 +40,10 @@ private:
 	//TODO Find reasonable default for cannon velocity
 	float LaunchSpeed = 100000; // speed in cm/s
 
+	UPROPERTY(EditAnywhere, Category = Firing)
+	float ReloadTimeInSeconds = 3; //Time to reload the cannon in seconds
+	double LastFireTime = 0;
+
 	UPROPERTY(EditAnywhere, Category = Setup)
 	//TODO Find reasonable default for cannon velocity
 	TSubclassOf<AProjectile> ProjectileBlueprint; // consider https://docs.unrealengine.com/latest/INT/Programming/UnrealArchitecture/TSubclassOf

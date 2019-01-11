@@ -1,13 +1,23 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Projectile.h"
+#include "../Public/Projectile.h"
 
 // Sets default values
 AProjectile::AProjectile()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	CannonProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(FName("Cannon Projectile Movement"));
+	CannonProjectileMovement->bAutoActivate = false;
 
+}
+
+void AProjectile::LaunchProjectile(float LaunchSpeed)
+{
+	auto Time = GetWorld()->GetTimeSeconds(); 
+	UE_LOG(LogTemp, Warning, TEXT("%f Firing cannon at speed %f."), Time, LaunchSpeed);
+	CannonProjectileMovement->SetVelocityInLocalSpace(FVector::ForwardVector*LaunchSpeed);
+	CannonProjectileMovement->Activate();
 }
 
 // Called when the game starts or when spawned

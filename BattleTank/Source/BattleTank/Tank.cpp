@@ -10,6 +10,7 @@
 ATank::ATank()
 {
 	PrimaryActorTick.bCanEverTick = false;
+	// adds a component to the blueprint
 	TankAimingComponent = CreateDefaultSubobject<UTankAimingComponent>(FName("Aiming Component"));
 }
 
@@ -45,11 +46,16 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void ATank::Fire()
 {
+	bool isReloaded = ((FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInSeconds);
 	//TODO Fire a shell at the target
-	UE_LOG(LogTemp, Warning, TEXT("Firing cannon."));
-	if (!Barrel) {
-		return; /// error check
+	if (Barrel && isReloaded) {
+		// Spawn a projectile a the barrel's muzzle socket.
+		auto Projectile = GetWorld()->SpawnActor<AProjectile>(
+			*ProjectileBlueprint,
+			Barrel->GetSocketLocation(FName("Muzzle")),
+			Barrel->GetSocketRotation(FName("Muzzle")));
+
+		Projectile->LaunchProjectile(LaunchSpeed);
+		LastFireTime = FPlatformTime::Seconds();
 	}
-	// Spawn a projectile a the barrel's muzzle socket.
-	GetWorld()->SpawnActor<AProjectile>(*ProjectileBlueprint, Barrel->GetSocketLocation(FName("Muzzle")), Barrel->GetSocketRotation(FName("Muzzle")));
 }

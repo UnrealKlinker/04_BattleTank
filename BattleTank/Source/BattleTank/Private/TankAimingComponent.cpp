@@ -73,14 +73,14 @@ void UTankAimingComponent::AimAt(FVector TargetLocation, float LaunchSpeed) cons
 		AimBarrelTowards(AimDirection);
 
 		auto BarrelLocation = Barrel->GetComponentLocation();
-		auto Time = GetWorld()->GetTimeSeconds();
+		//auto Time = GetWorld()->GetTimeSeconds();
 		//UE_LOG(LogTemp, Warning, TEXT("%f: Aim solution found, %s's barrel at %s, is aiming at: %s with launch speed %f"), Time, *GetOwner()->GetName(), *AimDirection.ToString(), *TargetLocation.ToString(), LaunchSpeed);
 		// Move Barrel
 
 	} 
 	else
 	{
-		auto Time = GetWorld()->GetTimeSeconds();
+		//auto Time = GetWorld()->GetTimeSeconds();
 		//UE_LOG(LogTemp, Warning, TEXT("%f: No aim solution found"), Time);
 	}
 }
