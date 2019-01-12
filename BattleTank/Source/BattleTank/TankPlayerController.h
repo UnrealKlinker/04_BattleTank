@@ -38,6 +38,6 @@ private:
 	float CrossHairYLocation = 0.33333f;
 
 	UPROPERTY(EditAnywhere)
-	float LineTraceRange = 1000000.0f; // distance in km
+	float LineTraceRange = 1000000.0f; // distance in cm
 
 };

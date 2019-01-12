@@ -10,7 +10,7 @@ class UStaticMeshComponent;
 /**
  * Used to elevate the tank barrel
  */
-UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent)) /// uyse hidecategories = ("Collision") to hide a category in the blueprint
+UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent)) /// use hidecategories = ("Collision") to hide a category in the blueprint
 class BATTLETANK_API UTankBarrel : public UStaticMeshComponent
 {
 	GENERATED_BODY()

@@ -19,8 +19,10 @@ public:
 	void Rotate(float RelativeSpeed);
 
 private:
-		UPROPERTY(EditAnywhere, Category = Setup)
-		float MaxDegreesPerSecond = 20; // Maximum turret rotation speed
+	UPROPERTY(EditAnywhere, Category = Setup)
+	float MaxDegreesPerSecond = 20; // Maximum turret rotation speed
 
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
 
 };

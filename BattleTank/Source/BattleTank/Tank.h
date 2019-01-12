@@ -44,8 +44,7 @@ private:
 	float ReloadTimeInSeconds = 3; //Time to reload the cannon in seconds
 	double LastFireTime = 0;
 
-	UPROPERTY(EditAnywhere, Category = Setup)
-	//TODO Find reasonable default for cannon velocity
+	UPROPERTY(EditDefaultsOnly, Category = Setup) /// this make it editable on the blueprint only
 	TSubclassOf<AProjectile> ProjectileBlueprint; // consider https://docs.unrealengine.com/latest/INT/Programming/UnrealArchitecture/TSubclassOf
 
 	// Local barrel reference
