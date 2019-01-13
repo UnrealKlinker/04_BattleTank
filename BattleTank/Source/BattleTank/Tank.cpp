@@ -2,6 +2,7 @@
 
 #include "Tank.h"
 #include "Public/TankAimingComponent.h"
+#include "Public/TankMovementComponent.h"
 #include "Public/TankBarrel.h"
 #include "Public/TankTurret.h"
 #include "Public/Projectile.h"
@@ -12,6 +13,7 @@ ATank::ATank()
 	PrimaryActorTick.bCanEverTick = false;
 	// adds a component to the blueprint
 	TankAimingComponent = CreateDefaultSubobject<UTankAimingComponent>(FName("Aiming Component"));
+	
 }
 
 void ATank::AimAt(FVector TargetLocation)

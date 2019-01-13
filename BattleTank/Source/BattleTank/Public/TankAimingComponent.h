@@ -10,7 +10,7 @@ class UTankBarrel;
 class UTankTurret;
 class UActorComponent;
 
-// Used to aim the tank's cannon`
+// Used to aim the tank's cannon
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BATTLETANK_API UTankAimingComponent : public UActorComponent
 {
