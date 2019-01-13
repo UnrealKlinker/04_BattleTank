@@ -5,11 +5,9 @@
 
 
 // Called when the game starts or when spawned
-void ATank::BeginPlay()
+void UTankTurret::BeginPlay()
 {
 	Super::BeginPlay();
-	
-
 }
 
 void UTankTurret::Rotate(float RelativeSpeed)
