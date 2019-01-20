@@ -10,6 +10,20 @@ void UTankMovementComponent::Initialize(UTankTrack *LeftTrackToSet, UTankTrack *
 	RightTrack = RightTrackToSet;
 }
 
+void UTankMovementComponent::RequestDirectMove(const FVector & MoveVelocity, bool bForceMaxSpeed)
+{
+	/// replacing functionality so don't call super
+	auto TankName = GetOwner()->GetName();
+	/// the direction the AI wants to move the tank
+	auto AIForwardIntention = MoveVelocity.GetSafeNormal();
+	/// direction the tank is facing
+	auto TankForward = GetOwner()->GetActorForwardVector();
+	/// use the cosine function to get the tank to move in the AI direction - via the vector dot product
+	float DotProduct = FVector::DotProduct(AIForwardIntention, TankForward);
+	IntendMoveForward(DotProduct);
+	//UE_LOG(LogTemp, Warning, TEXT("Tank %s is moving at velocity %s"), *TankName,*MoveVelocityString);
+}
+
 void UTankMovementComponent::IntendMoveForward(float Throw)
 {
 	if (!LeftTrack || !RightTrack)
@@ -17,7 +31,7 @@ void UTankMovementComponent::IntendMoveForward(float Throw)
 		return;
 	}
 	//auto Name = GetName();
-	//UE_LOG(LogTemp, Warning, TEXT("Intend move forward %f"), Throw);
+	UE_LOG(LogTemp, Warning, TEXT("Intend move forward %f"), Throw);
 	Throw = FMath::Clamp<float>(Throw, -1, +1);
 	LeftTrack->SetThrottle(Throw);
 	RightTrack->SetThrottle(Throw);
