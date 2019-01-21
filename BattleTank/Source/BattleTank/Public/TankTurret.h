@@ -1,5 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
+// Copyright Paul Klinker, 2019.
 #pragma once
 
 #include "CoreMinimal.h"
@@ -19,7 +18,7 @@ public:
 	void Rotate(float RelativeSpeed);
 
 private:
-	UPROPERTY(EditAnywhere, Category = Setup)
+	UPROPERTY(EditAnywhere, Category = "Setup")
 	float MaxDegreesPerSecond = 20; // Maximum turret rotation speed
 
 	// Called when the game starts or when spawned

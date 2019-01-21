@@ -1,5 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
+// Copyright Paul Klinker, 2019.
 #pragma once
 
 #include "CoreMinimal.h"
@@ -22,9 +21,9 @@ public:
 	// Sets default values for this pawn's properties
 	ATank();
 	void AimAt(FVector TargetLocation);
-	UFUNCTION(BlueprintCallable, Category = Setup)
+	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void SetBarrelReference(UTankBarrel *BarrelToSet);
-	UFUNCTION(BlueprintCallable, Category = Setup)
+	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void SetTurretReference(UTankTurret *TurretToSet);
 	UFUNCTION(BlueprintCallable)
 	void Fire();
@@ -36,19 +35,19 @@ protected:
 	virtual void BeginPlay() override;
 	UTankAimingComponent* TankAimingComponent = nullptr;
 
-	UPROPERTY(BlueprintReadOnly, Category = Setup)
+	UPROPERTY(BlueprintReadOnly, Category = "Setup")
 	UTankMovementComponent* TankMovementComponent = nullptr;
 
 private:
-	UPROPERTY(EditAnywhere, Category=Firing)
+	UPROPERTY(EditAnywhere, Category = "Firing")
 	//TODO Find reasonable default for cannon velocity
 	float LaunchSpeed = 100000; // speed in cm/s
 
-	UPROPERTY(EditAnywhere, Category = Firing)
+	UPROPERTY(EditAnywhere, Category = "Firing")
 	float ReloadTimeInSeconds = 3; //Time to reload the cannon in seconds
 	double LastFireTime = 0;
 
-	UPROPERTY(EditDefaultsOnly, Category = Setup) /// this make it editable on the blueprint only
+	UPROPERTY(EditDefaultsOnly, Category = "Setup") /// this make it editable on the blueprint only
 	TSubclassOf<AProjectile> ProjectileBlueprint; // consider https://docs.unrealengine.com/latest/INT/Programming/UnrealArchitecture/TSubclassOf
 
 	// Local barrel reference

@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright Paul Klinker, 2019.
 
 #include "../Public/Projectile.h"
 
@@ -15,7 +15,7 @@ AProjectile::AProjectile()
 void AProjectile::LaunchProjectile(float LaunchSpeed)
 {
 	auto Time = GetWorld()->GetTimeSeconds(); 
-	UE_LOG(LogTemp, Warning, TEXT("%f Firing cannon at speed %f."), Time, LaunchSpeed);
+	///UE_LOG(LogTemp, Warning, TEXT("%f Firing cannon at speed %f."), Time, LaunchSpeed);
 	CannonProjectileMovement->SetVelocityInLocalSpace(FVector::ForwardVector*LaunchSpeed);
 	CannonProjectileMovement->Activate();
 }

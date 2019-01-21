@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright Paul Klinker, 2019.
 
 #pragma once
 
@@ -18,17 +18,21 @@ class BATTLETANK_API UTankMovementComponent : public UNavMovementComponent
 	GENERATED_BODY()
 
 public:
-	UFUNCTION(BlueprintCallable, Category = Input)
+	UFUNCTION(BlueprintCallable, Category = "Input")
 	void IntendMoveForward(float Throw); // Throw is how far forward or back the stick is
-	UFUNCTION(BlueprintCallable, Category = Input)
+	UFUNCTION(BlueprintCallable, Category = "Input")
 	void IntendTurnRight(float Throw);
-    UFUNCTION(BlueprintCallable, Category = Input)
+    UFUNCTION(BlueprintCallable, Category = "Input")
 	void IntendTurnLeft(float Throw);
-	UFUNCTION(BlueprintCallable, Category = Setup)
+	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void Initialize(UTankTrack *LeftTrackToSet, UTankTrack *RightTrackToSet);
 
 	/** path following: request new velocity */
 	virtual void RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed) override;
+
+	// Multiplier to help turn the tank, especially when stopped. This is multiplied by the force.
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+    float TrackTurnForceMultiplier = 2;
 
 private:
 	UTankTrack *LeftTrack = nullptr;
