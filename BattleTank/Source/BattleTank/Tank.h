@@ -23,8 +23,6 @@ public:
 	void AimAt(FVector TargetLocation);
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void SetBarrelReference(UTankBarrel *BarrelToSet);
-	UFUNCTION(BlueprintCallable, Category = "Setup")
-	void SetTurretReference(UTankTurret *TurretToSet);
 	UFUNCTION(BlueprintCallable)
 	void Fire();
 	// Called to bind functionality to input
