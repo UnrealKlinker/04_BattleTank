@@ -16,10 +16,8 @@ class BATTLETANK_API ATankPlayerController : public APlayerController
 	GENERATED_BODY()
 	
 public:
+	UFUNCTION(BlueprintCAllable, Category="Setup")
 	ATank* GetControlledTank() const;
-
-	virtual void BeginPlay() override;
-	virtual void Tick(float DeltaTime) override;
 
 protected:
 	// Start the tank moving the barrel so the shot would hit where the crosshair intersects the world.
@@ -40,4 +38,6 @@ private:
 	UPROPERTY(EditAnywhere)
 	float LineTraceRange = 1000000.0f; // distance in cm
 
+	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaTime) override;
 };
