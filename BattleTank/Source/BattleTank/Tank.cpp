@@ -44,7 +44,7 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 void ATank::Fire()
 {
 	bool isReloaded = ((FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInSeconds);
-	//TODO Fire a shell at the target
+	// Fire a shell at the target
 	if (Barrel && isReloaded) {
 		// Spawn a projectile a the barrel's muzzle socket.
 		auto Projectile = GetWorld()->SpawnActor<AProjectile>(

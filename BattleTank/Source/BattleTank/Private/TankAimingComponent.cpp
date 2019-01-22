@@ -18,25 +18,6 @@ UTankAimingComponent::UTankAimingComponent()
 }
 
 
-
-void UTankAimingComponent::SetBarrelReference(UTankBarrel * BarrelToSet)
-{
-	if (!BarrelToSet)
-	{
-		return;
-	}
-	Barrel = BarrelToSet;
-}
-
-void UTankAimingComponent::SetTurretReference(UTankTurret * TurretToSet)
-{
-	if (!TurretToSet)
-	{
-		return;
-	}
-	Turret = TurretToSet;
-}
-
 void UTankAimingComponent::AimAt(FVector TargetLocation, float LaunchSpeed) const
 {
 	if (!Barrel)
@@ -100,4 +81,10 @@ void UTankAimingComponent::AimBarrelTowards(const FVector AimDirection) const
 	//UE_LOG(LogTemp, Warning, TEXT("AimAsRotator delta: %s"), *DeltaRotator.ToString());
 	Barrel->Elevate(DeltaRotator.Pitch); // TODO remove magic number from barrel elevation
 	Turret->Rotate(DeltaRotator.Yaw);
+}
+
+void UTankAimingComponent::Initialize(UTankBarrel * BarrelToSet, UTankTurret * TurretToSet)
+{
+	Barrel = BarrelToSet;
+	Turret = TurretToSet;
 }
