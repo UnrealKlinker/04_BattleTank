@@ -20,7 +20,7 @@ void UTankMovementComponent::RequestDirectMove(const FVector & MoveVelocity, boo
 	auto TankForward = GetOwner()->GetActorForwardVector();
 	/// use the cosine function to get the tank to move in the AI direction - via the vector dot product
 	float DotProduct = FVector::DotProduct(AIForwardIntention, TankForward);
-	 IntendMoveForward(DotProduct);
+	IntendMoveForward(DotProduct);
 
 	// use the sine function to get the amount the tank must turn to face the player - via the cross product so order matters
 	FVector TankTurn = FVector::CrossProduct(TankForward, AIForwardIntention);
@@ -31,7 +31,7 @@ void UTankMovementComponent::RequestDirectMove(const FVector & MoveVelocity, boo
 
 void UTankMovementComponent::IntendMoveForward(float Throw)
 {
-	if (!LeftTrack || !RightTrack)
+	if (!ensure(LeftTrack && RightTrack))
 	{
 		return;
 	}
@@ -44,7 +44,7 @@ void UTankMovementComponent::IntendMoveForward(float Throw)
 }
 void UTankMovementComponent::IntendTurnRight(float Throw)
 {
-	if (!LeftTrack || !RightTrack)
+	if (!ensure(LeftTrack && RightTrack))
 	{
 		return;
 	}
@@ -55,7 +55,7 @@ void UTankMovementComponent::IntendTurnRight(float Throw)
 }
 void UTankMovementComponent::IntendTurnLeft(float Throw)
 {
-	if (!LeftTrack || !RightTrack)
+	if (!ensure(LeftTrack && RightTrack))
 	{
 		return;
 	}

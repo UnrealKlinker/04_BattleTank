@@ -4,12 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
-#include "Tank.h"
+#include "Public/TankAimingComponent.h"
 #include "TankPlayerController.generated.h" // must be last include
 
 
-
-
+/// forward declarations
+class ATank;
+//class UTankAimingComponent;
 /**
  * 
  */
@@ -19,7 +20,7 @@ class BATTLETANK_API ATankPlayerController : public APlayerController
 	GENERATED_BODY()
 	
 public:
-	UFUNCTION(BlueprintCAllable, Category="Setup")
+	UFUNCTION(BlueprintCallable, Category="Setup")
 	ATank* GetControlledTank() const;
 
 protected:
@@ -30,6 +31,10 @@ protected:
 	bool GetLookDirection(FVector2D ScreenLocation, FVector & LookDirection) const;
 
 	bool GetLookVectorHitLocation(FVector LookDirection, FVector &HitLocation) const;
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
+	void FoundAimingComponent(UTankAimingComponent* AimCompRef);
+
 
 private:
 	UPROPERTY(EditAnywhere)

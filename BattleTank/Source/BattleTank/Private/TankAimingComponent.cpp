@@ -2,7 +2,6 @@
 #include "../Public/TankAimingComponent.h"
 #include "../Public/TankBarrel.h"
 #include "../Public/TankTurret.h"
-#include "../Public/TankTrack.h"
 #include "Components/ActorComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Containers/Array.h"
@@ -20,7 +19,7 @@ UTankAimingComponent::UTankAimingComponent()
 
 void UTankAimingComponent::AimAt(FVector TargetLocation, float LaunchSpeed) const
 {
-	if (!Barrel)
+	if (!ensure(Barrel))
 	{
 		return;
 	}
@@ -69,7 +68,7 @@ void UTankAimingComponent::AimAt(FVector TargetLocation, float LaunchSpeed) cons
 
 void UTankAimingComponent::AimBarrelTowards(const FVector AimDirection) const
 {
-	if (!Barrel || !Turret)
+	if (!ensure(Barrel) || !ensure(Turret))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Turret or Barrel is null"));
 		return;
