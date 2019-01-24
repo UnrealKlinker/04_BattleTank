@@ -1,7 +1,7 @@
 // Copyright Paul Klinker, 2019.
 
 #include "../Public/TankAIController.h"
-#include "Tank.h"
+#include "../Public/TankAimingComponent.h"
 #include "Engine/World.h"
 #include "GameFramework/PlayerController.h"
 
@@ -9,19 +9,26 @@
 void ATankAIController::BeginPlay()
 {
 	Super::BeginPlay();
-	///UE_LOG(LogTemp, Warning, TEXT("AI Tank Controller Begin Play"));
+/*	TankAimingComponent = FindComponentByClass<UTankAimingComponent>();
+	if (!ensure(TankAimingComponent))
+	{
+		UE_LOG(LogTemp, Error, TEXT("AI controller cannot find Tank Aiming Component at BeginPlay"));
+		return;
+	}
+	FoundAimingComponent(TankAimingComponent);
+	*/
 }
 
 // Tick Called every frame
 void ATankAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	ATank *ThisTank = Cast<ATank>(GetPawn());
-	ATank *PlayerTank = nullptr;
+	auto *ThisTank = GetPawn();
+	APawn *PlayerTank = nullptr;
 	APlayerController *PlayerController = GetWorld()->GetFirstPlayerController();
 	if (ensure(PlayerController))
 	{
-		PlayerTank = Cast<ATank>(PlayerController->GetPawn());
+		PlayerTank = PlayerController->GetPawn();
 	}
 	else {
 		/// UE_LOG(LogTemp, Warning, TEXT("Can't find player tank."));
@@ -32,9 +39,12 @@ void ATankAIController::Tick(float DeltaTime)
 	{
 		// TODO Move towards the player
 		MoveToActor(PlayerTank, AcceptanceRadius, true, true, false);
+		auto TankAimingComponent = ThisTank->FindComponentByClass<UTankAimingComponent>();
 		// Aim towards the player
-		ThisTank->AimAt(PlayerTank->GetActorLocation());
+		TankAimingComponent->AimAt(PlayerTank->GetActorLocation());
+
 		// Fire every frame 
-		ThisTank->Fire();
+		//TODO fix this
+		//ThisTank->Fire();
 	}
 }

@@ -9,7 +9,6 @@
 
 
 /// forward declarations
-class ATank;
 //class UTankAimingComponent;
 /**
  * 
@@ -20,8 +19,6 @@ class BATTLETANK_API ATankPlayerController : public APlayerController
 	GENERATED_BODY()
 	
 public:
-	UFUNCTION(BlueprintCallable, Category="Setup")
-	ATank* GetControlledTank() const;
 
 protected:
 	// Start the tank moving the barrel so the shot would hit where the crosshair intersects the world.
@@ -35,7 +32,6 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
 	void FoundAimingComponent(UTankAimingComponent* AimCompRef);
 
-
 private:
 	UPROPERTY(EditAnywhere)
 	float CrossHairXLocation = 0.5f;
@@ -48,4 +44,5 @@ private:
 
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
+
 };

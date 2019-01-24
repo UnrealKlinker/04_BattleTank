@@ -34,12 +34,16 @@ public:
 	void AimBarrelTowards(FVector AimDirection) const;
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void Initialize(UTankBarrel *BarrelToSet, UTankTurret *TurretToSet);
-
+	void AimAt(FVector TargetLocation);
 
 protected:
 
 	UPROPERTY(BlueprintReadOnly, Category = "State")
 	EFiringStatus FiringStatus = EFiringStatus::EFS_Aiming;
+
+	//TODO Find reasonable default for cannon velocity
+	UPROPERTY(EditAnywhere, Category = "Firing")
+	float LaunchSpeed = 100000; // speed in cm/s
 
 private:
 	UTankBarrel *Barrel = nullptr;
