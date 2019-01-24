@@ -13,12 +13,21 @@ ATank::ATank()
 	PrimaryActorTick.bCanEverTick = false;
 	// adds a component to the blueprint
 	TankAimingComponent = CreateDefaultSubobject<UTankAimingComponent>(FName("Aiming Component"));
+	//	CreateComponentFromTemplate(UTankAimingComponent )
 	
+	//TankAimingComponent = FindComponentByClass<UTankAimingComponent>();
+	if (!ensure(TankAimingComponent)) {
+		UE_LOG(LogTemp, Error, TEXT("TankAimingComponent is null in ATank constructor."));
+	}
 }
 
 void ATank::AimAt(FVector TargetLocation)
 {
-	auto OurTankName = GetName();
+	if (!ensure(TankAimingComponent)) {
+		UE_LOG(LogTemp, Error, TEXT("TankAimingComponent is null, returning."));
+		return;
+	}
+
 	TankAimingComponent->AimAt(TargetLocation, LaunchSpeed);
 }
 

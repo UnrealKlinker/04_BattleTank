@@ -44,7 +44,12 @@ void ATankPlayerController::Tick(float DeltaTime)
 
 void ATankPlayerController::AimTowardsCrosshair()
 {
-	if (!ensure(GetControlledTank())) { return;	}
+	if (!ensure(GetControlledTank())) 
+	{ 
+		UE_LOG(LogTemp, Error, TEXT("Cannot get player contolled tank."));
+
+		return;	
+	}
 
 	FVector HitLocation;
 	if (GetSightRayHitLocation(HitLocation)) //Has "side-effect" - it line traces
