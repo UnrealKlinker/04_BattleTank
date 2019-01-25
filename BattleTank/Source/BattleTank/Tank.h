@@ -19,8 +19,7 @@ public:
 	ATank();
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void SetBarrelReference(UTankBarrel *BarrelToSet);
-	UFUNCTION(BlueprintCallable)
-	void Fire();
+
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
@@ -33,12 +32,8 @@ private:
 	//TODO Find reasonable default for cannon velocity
 	float LaunchSpeed = 100000; // speed in cm/s
 
-	UPROPERTY(EditAnywhere, Category = "Firing")
-	float ReloadTimeInSeconds = 3; //Time to reload the cannon in seconds
-	double LastFireTime = 0;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Setup") /// this make it editable on the blueprint only
-	TSubclassOf<AProjectile> ProjectileBlueprint; // consider https://docs.unrealengine.com/latest/INT/Programming/UnrealArchitecture/TSubclassOf
+
 
 	// Local barrel reference
 	UTankBarrel* Barrel = nullptr; //TODO Remove

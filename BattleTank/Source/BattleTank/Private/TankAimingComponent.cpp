@@ -2,6 +2,7 @@
 #include "../Public/TankAimingComponent.h"
 #include "../Public/TankBarrel.h"
 #include "../Public/TankTurret.h"
+#include "../Public/Projectile.h"
 #include "Components/ActorComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Containers/Array.h"
@@ -91,4 +92,28 @@ void UTankAimingComponent::Initialize(UTankBarrel * BarrelToSet, UTankTurret * T
 void UTankAimingComponent::AimAt(FVector TargetLocation)
 {
 	AimAt(TargetLocation, LaunchSpeed);
+}
+
+void UTankAimingComponent::Fire()
+{
+	if (!ensure(Barrel))
+	{
+		return;
+	}
+
+	bool isReloaded = ((FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInSeconds);
+	// Fire a shell at the target
+	if (isReloaded) {
+		// Spawn a projectile a the barrel's muzzle socket.
+		auto Projectile = GetWorld()->SpawnActor<AProjectile>(
+			*ProjectileBlueprint,
+			Barrel->GetSocketLocation(FName("Muzzle")),
+			Barrel->GetSocketRotation(FName("Muzzle")));
+		if (!ensure(Projectile))
+		{
+			return;
+		}
+		Projectile->LaunchProjectile(LaunchSpeed);
+		LastFireTime = FPlatformTime::Seconds();
+	}
 }

@@ -9,6 +9,7 @@
 class UTankBarrel;
 class UTankTurret;
 class UActorComponent;
+class AProjectile;
 
 UENUM(BlueprintType)		//"BlueprintType" is essential to include
 enum class EFiringStatus : uint8
@@ -35,8 +36,12 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void Initialize(UTankBarrel *BarrelToSet, UTankTurret *TurretToSet);
 	void AimAt(FVector TargetLocation);
+	UFUNCTION(BlueprintCallable)
+	void Fire();
 
 protected:
+	UPROPERTY(EditDefaultsOnly, Category = "Setup") /// this make it editable on the blueprint only
+	TSubclassOf<AProjectile> ProjectileBlueprint; // consider https://docs.unrealengine.com/latest/INT/Programming/UnrealArchitecture/TSubclassOf
 
 	UPROPERTY(BlueprintReadOnly, Category = "State")
 	EFiringStatus FiringStatus = EFiringStatus::EFS_Aiming;
@@ -44,9 +49,11 @@ protected:
 	//TODO Find reasonable default for cannon velocity
 	UPROPERTY(EditAnywhere, Category = "Firing")
 	float LaunchSpeed = 100000; // speed in cm/s
+	UPROPERTY(EditAnywhere, Category = "Firing")
+	float ReloadTimeInSeconds = 3; //Time to reload the cannon in seconds
 
 private:
 	UTankBarrel *Barrel = nullptr;
 	UTankTurret *Turret = nullptr;
-
+	double LastFireTime = 0;
 };
