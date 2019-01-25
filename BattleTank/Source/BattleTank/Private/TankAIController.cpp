@@ -45,6 +45,6 @@ void ATankAIController::Tick(float DeltaTime)
 
 		// Fire every frame 
 		//TODO fix this
-		//ThisTank->Fire();
+		TankAimingComponent->Fire();
 	}
 }
