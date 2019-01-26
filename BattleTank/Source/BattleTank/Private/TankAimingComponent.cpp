@@ -132,6 +132,7 @@ void UTankAimingComponent::BeginPlay()
 
 void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction * ThisTickFunction)
 {
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 	///UE_LOG(LogTemp, Warning, TEXT("UTankAimingComponent TickComponent DeltaTime %f"), DeltaTime);
 	if ((FPlatformTime::Seconds() - LastFireTime) <  ReloadTimeInSeconds)
 	{

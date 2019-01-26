@@ -22,5 +22,17 @@ public:
 
 	// Max force per track, in Newtons
 	UPROPERTY(EditDefaultsOnly)
-	float TrackMaxDrivingForce = 45007000.0; /// assume 40 Ton tank and 0-60 in 10 seconds. F=ma
+	float TrackMaxDrivingForce = 45007000.0;
+	UTankTrack();
+	/// assume 40 Ton tank and 0-60 in 10 seconds. F=ma
+private:
+
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+
+	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
+	FVector ForceApplied;
+	UFUNCTION()
+		void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+
 };
