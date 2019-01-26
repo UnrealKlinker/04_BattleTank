@@ -3,7 +3,6 @@
 #include "../Public/TankBarrel.h"
 #include "../Public/TankTurret.h"
 #include "../Public/Projectile.h"
-#include "Components/ActorComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Containers/Array.h"
 
@@ -14,7 +13,6 @@ UTankAimingComponent::UTankAimingComponent()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 
-	// ...
 }
 
 
@@ -87,6 +85,13 @@ void UTankAimingComponent::Initialize(UTankBarrel * BarrelToSet, UTankTurret * T
 {
 	Barrel = BarrelToSet;
 	Turret = TurretToSet;
+	if (!ensure(Barrel))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("UTankAimingComponent barrel is missing in initialize."));
+		return;
+	}
+	LastBarrelPosition = Barrel->GetForwardVector();
+
 }
 
 void UTankAimingComponent::AimAt(FVector TargetLocation)
@@ -96,14 +101,13 @@ void UTankAimingComponent::AimAt(FVector TargetLocation)
 
 void UTankAimingComponent::Fire()
 {
-	if (!ensure(Barrel))
-	{
-		return;
-	}
-
-	bool isReloaded = ((FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInSeconds);
 	// Fire a shell at the target
-	if (isReloaded) {
+	if (FiringStatus != EFiringStatus::EFS_Reloading) {
+		if (!ensure(Barrel)) //TODO don't think I need this anymore since there is a check in BeginPlay
+		{
+			UE_LOG(LogTemp, Warning, TEXT("UTankAimingComponent barrel is missing."));
+			return;
+		}
 		// Spawn a projectile a the barrel's muzzle socket.
 		auto Projectile = GetWorld()->SpawnActor<AProjectile>(
 			*ProjectileBlueprint,
@@ -111,9 +115,46 @@ void UTankAimingComponent::Fire()
 			Barrel->GetSocketRotation(FName("Muzzle")));
 		if (!ensure(Projectile))
 		{
+			UE_LOG(LogTemp, Warning, TEXT("UTankAimingComponent projectile is missing."));
 			return;
 		}
 		Projectile->LaunchProjectile(LaunchSpeed);
 		LastFireTime = FPlatformTime::Seconds();
+		FiringStatus = EFiringStatus::EFS_Reloading;
 	}
+}
+
+void UTankAimingComponent::BeginPlay()
+{
+	/// this prevents AI tanks from firing immediately upon spawning
+	LastFireTime = FPlatformTime::Seconds();
+}
+
+void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction * ThisTickFunction)
+{
+	///UE_LOG(LogTemp, Warning, TEXT("UTankAimingComponent TickComponent DeltaTime %f"), DeltaTime);
+	if ((FPlatformTime::Seconds() - LastFireTime) <  ReloadTimeInSeconds)
+	{
+		FiringStatus = EFiringStatus::EFS_Reloading;
+	}
+	else if (IsBarrelMoving())
+	{
+		FiringStatus = EFiringStatus::EFS_Aiming;
+	}
+	else {
+		FiringStatus = EFiringStatus::EFS_Locked;
+	}
+}
+
+bool UTankAimingComponent::IsBarrelMoving() {
+	bool BarrelMoving = true;
+	/// get current barrel position
+	FVector CurrentBarrelPosition = Barrel->GetForwardVector();
+	/// compare to old position
+	if (LastBarrelPosition.Equals(CurrentBarrelPosition, KINDA_SMALL_NUMBER)) {
+		BarrelMoving = false;
+	}
+	/// set old position to current position
+	LastBarrelPosition = CurrentBarrelPosition;
+	return BarrelMoving;
 }
