@@ -66,16 +66,13 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector &HitLocation) const
 	{
 		// line-trace along that look direction and see what we hit (up to max range)
 		///UE_LOG(LogTemp, Warning, TEXT("LookDirection: %s"), *LookDirection.ToString());
-		if (GetLookVectorHitLocation(LookDirection, HitLocation))
-		{
-			
-		}
+		return GetLookVectorHitLocation(LookDirection, HitLocation);
 	}
 
 	// My notes: if hit, return true and set the HitLocation value
 	// draw a line from gun barrel through dot to infinity
 	// get actors that intersect line by checking points within a volume.
-	return true;
+	return false;
 }
 
 // Get the direction the reticle is facing

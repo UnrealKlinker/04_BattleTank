@@ -43,8 +43,10 @@ void ATankAIController::Tick(float DeltaTime)
 		// Aim towards the player
 		TankAimingComponent->AimAt(PlayerTank->GetActorLocation());
 
-		// Fire every frame 
-		//TODO fix this
-		TankAimingComponent->Fire();
+		// If locked then fire
+		if (TankAimingComponent->GetFiringStatus() == EFiringStatus::EFS_Locked)
+		{
+			TankAimingComponent->Fire();
+		}
 	}
 }

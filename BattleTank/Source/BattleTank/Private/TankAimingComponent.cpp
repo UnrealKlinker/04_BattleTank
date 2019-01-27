@@ -76,9 +76,19 @@ void UTankAimingComponent::AimBarrelTowards(const FVector AimDirection) const
 	auto BarrelRotator = Barrel->GetForwardVector().Rotation();
 	auto AimAsRotator = AimDirection.Rotation();
 	auto DeltaRotator = AimAsRotator - BarrelRotator;
-	//UE_LOG(LogTemp, Warning, TEXT("AimAsRotator delta: %s"), *DeltaRotator.ToString());
 	Barrel->Elevate(DeltaRotator.Pitch); // TODO remove magic number from barrel elevation
-	Turret->Rotate(DeltaRotator.Yaw);
+
+	// If the target is to the left then move the barrel in that direction, don't traverse all the way around
+	if ((DeltaRotator.Yaw > 180) && (DeltaRotator.Yaw <= 360)) {
+		float ReverseYaw = 360 - DeltaRotator.Yaw;
+		Turret->Rotate(-ReverseYaw);
+	}
+	else {
+		Turret->Rotate(DeltaRotator.Yaw);
+
+	}
+
+	//UE_LOG(LogTemp, Warning, TEXT("AimAsRotator delta: %s"), *DeltaRotator.ToString());
 }
 
 void UTankAimingComponent::Initialize(UTankBarrel * BarrelToSet, UTankTurret * TurretToSet)
@@ -152,10 +162,15 @@ bool UTankAimingComponent::IsBarrelMoving() {
 	/// get current barrel position
 	FVector CurrentBarrelPosition = Barrel->GetForwardVector();
 	/// compare to old position
-	if (LastBarrelPosition.Equals(CurrentBarrelPosition, KINDA_SMALL_NUMBER)) {
+	if (LastBarrelPosition.Equals(CurrentBarrelPosition, 0.011)) {
 		BarrelMoving = false;
 	}
 	/// set old position to current position
 	LastBarrelPosition = CurrentBarrelPosition;
 	return BarrelMoving;
+}
+
+EFiringStatus UTankAimingComponent::GetFiringStatus() const
+{
+	return FiringStatus;
 }

@@ -26,8 +26,9 @@ protected:
 //	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
 //	void FoundAimingComponent(UTankAimingComponent* AimCompRef);
 
-private:
 	// How close can the AI tank get to the player in cm
+
+	UPROPERTY(EditAnywhere, Category = "Setup")
 	float AcceptanceRadius = 3000; 
 
 };
