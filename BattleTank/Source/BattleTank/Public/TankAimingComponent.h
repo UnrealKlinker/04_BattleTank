@@ -17,7 +17,8 @@ enum class EFiringStatus : uint8
 {
 	EFS_Reloading UMETA(DisplayName = "Reloading"),
 	EFS_Aiming 	UMETA(DisplayName = "Aiming"),
-	EFS_Locked	UMETA(DisplayName = "Locked")
+	EFS_Locked	UMETA(DisplayName = "Locked"),
+	EFS_OutOfAmmo UMETA(DisplayName = "OutOfAmmo")
 };
 
 // Used to aim the tank's cannon
@@ -38,6 +39,8 @@ public:
 		void Initialize(UTankBarrel *BarrelToSet, UTankTurret *TurretToSet);
 	UFUNCTION(BlueprintCallable)
 		void Fire();
+	UFUNCTION(BlueprintCallable, Category = "Status")
+		FString GetAmmoAmount();
 
 	void AimAt(FVector TargetLocation);
 
@@ -71,11 +74,14 @@ protected:
 		float LaunchSpeed = 100000; // speed in cm/s
 	UPROPERTY(EditAnywhere, Category = "Firing")
 		float ReloadTimeInSeconds = 3; //Time to reload the cannon in seconds
+	UPROPERTY(EditAnywhere, Category = "Firing")
+		int AmmoCapacity = 3; //Amount of rounds the tank carries
 
 private:
 	UTankBarrel *Barrel = nullptr;
 	UTankTurret *Turret = nullptr;
 	double LastFireTime = 0.0;
 	FVector LastBarrelPosition;
+	int CurrentAmmo = 0;
 
 };

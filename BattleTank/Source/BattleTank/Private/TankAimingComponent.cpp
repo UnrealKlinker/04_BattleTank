@@ -112,7 +112,10 @@ void UTankAimingComponent::AimAt(FVector TargetLocation)
 void UTankAimingComponent::Fire()
 {
 	// Fire a shell at the target
-	if (FiringStatus != EFiringStatus::EFS_Reloading) {
+	if ((FiringStatus == EFiringStatus::EFS_Aiming) ||
+		(FiringStatus == EFiringStatus::EFS_Locked))
+
+	{
 		if (!ensure(Barrel)) //TODO don't think I need this anymore since there is a check in BeginPlay
 		{
 			UE_LOG(LogTemp, Warning, TEXT("UTankAimingComponent barrel is missing."));
@@ -130,28 +133,44 @@ void UTankAimingComponent::Fire()
 		}
 		Projectile->LaunchProjectile(LaunchSpeed);
 		LastFireTime = FPlatformTime::Seconds();
-		FiringStatus = EFiringStatus::EFS_Reloading;
+		CurrentAmmo--;
+		if (CurrentAmmo <= 0) {
+			FiringStatus = EFiringStatus::EFS_OutOfAmmo;
+		}
+		else {
+			FiringStatus = EFiringStatus::EFS_Reloading;
+		}
 	}
+}
+
+FString UTankAimingComponent::GetAmmoAmount()
+{
+	return FString::FromInt(CurrentAmmo);
 }
 
 void UTankAimingComponent::BeginPlay()
 {
 	/// this prevents AI tanks from firing immediately upon spawning
 	LastFireTime = FPlatformTime::Seconds();
+	CurrentAmmo = AmmoCapacity;
 }
 
 void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction * ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 	///UE_LOG(LogTemp, Warning, TEXT("UTankAimingComponent TickComponent DeltaTime %f"), DeltaTime);
-	if ((FPlatformTime::Seconds() - LastFireTime) <  ReloadTimeInSeconds)
+	if (CurrentAmmo <= 0)
+	{
+		FiringStatus = EFiringStatus::EFS_OutOfAmmo;
+	}
+	else if ((FPlatformTime::Seconds() - LastFireTime) <  ReloadTimeInSeconds)
 	{
 		FiringStatus = EFiringStatus::EFS_Reloading;
 	}
 	else if (IsBarrelMoving())
 	{
 		FiringStatus = EFiringStatus::EFS_Aiming;
-	}
+	} 
 	else {
 		FiringStatus = EFiringStatus::EFS_Locked;
 	}
