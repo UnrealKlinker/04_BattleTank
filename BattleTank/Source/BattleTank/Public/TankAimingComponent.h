@@ -71,17 +71,17 @@ protected:
 
 	//TODO Find reasonable default for cannon velocity
 	UPROPERTY(EditAnywhere, Category = "Firing")
-		float LaunchSpeed = 100000; // speed in cm/s
+		float LaunchSpeed = 20000; // speed in cm/s
 	UPROPERTY(EditAnywhere, Category = "Firing")
 		float ReloadTimeInSeconds = 3; //Time to reload the cannon in seconds
 	UPROPERTY(EditAnywhere, Category = "Firing")
-		int AmmoCapacity = 3; //Amount of rounds the tank carries
+		int32 AmmoCapacity = 30; //Amount of rounds the tank carries
 
 private:
 	UTankBarrel *Barrel = nullptr;
 	UTankTurret *Turret = nullptr;
 	double LastFireTime = 0.0;
 	FVector LastBarrelPosition;
-	int CurrentAmmo = 0;
+	int32 CurrentAmmo = 0;
 
 };

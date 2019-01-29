@@ -121,11 +121,10 @@ void UTankAimingComponent::Fire()
 			UE_LOG(LogTemp, Warning, TEXT("UTankAimingComponent barrel is missing."));
 			return;
 		}
-		// Spawn a projectile a the barrel's muzzle socket.
-		auto Projectile = GetWorld()->SpawnActor<AProjectile>(
-			*ProjectileBlueprint,
-			Barrel->GetSocketLocation(FName("Muzzle")),
-			Barrel->GetSocketRotation(FName("Muzzle")));
+		// Spawn a projectile at the barrel's muzzle socket.
+		auto SocketLocation = Barrel->GetSocketLocation(FName("Muzzle"));
+		auto SocketRotation = Barrel->GetSocketRotation(FName("Muzzle"));
+		auto Projectile = GetWorld()->SpawnActor<AProjectile>(*ProjectileBlueprint, SocketLocation, SocketRotation);
 		if (!ensure(Projectile))
 		{
 			UE_LOG(LogTemp, Warning, TEXT("UTankAimingComponent projectile is missing."));
@@ -150,6 +149,7 @@ FString UTankAimingComponent::GetAmmoAmount()
 
 void UTankAimingComponent::BeginPlay()
 {
+	Super::BeginPlay();
 	/// this prevents AI tanks from firing immediately upon spawning
 	LastFireTime = FPlatformTime::Seconds();
 	CurrentAmmo = AmmoCapacity;

@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Particles/ParticleSystemComponent.h"
+#include "Components/StaticMeshComponent.h"
 #include "GameFramework/Actor.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Projectile.generated.h"
@@ -14,6 +16,9 @@ class BATTLETANK_API AProjectile : public AActor
 	
 public:	
 	// Sets default values for this actor's properties
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
+	void LaunchProjectile(float LaunchSpeed);
 	AProjectile();
 
 protected:
@@ -22,9 +27,8 @@ protected:
 
 private:
 	UProjectileMovementComponent *CannonProjectileMovement = nullptr;
-
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-	void LaunchProjectile(float LaunchSpeed);
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+		UStaticMeshComponent *CollisionMesh = nullptr;
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+		UParticleSystemComponent *LaunchBlast = nullptr;
 };
