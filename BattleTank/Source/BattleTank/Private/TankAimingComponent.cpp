@@ -79,12 +79,12 @@ void UTankAimingComponent::AimBarrelTowards(const FVector AimDirection) const
 	Barrel->Elevate(DeltaRotator.Pitch); // TODO remove magic number from barrel elevation
 
 	// If the target is to the left then move the barrel in that direction, don't traverse all the way around
-	if ((DeltaRotator.Yaw > 180) && (DeltaRotator.Yaw <= 360)) {
-		float ReverseYaw = 360 - DeltaRotator.Yaw;
-		Turret->Rotate(-ReverseYaw);
+	if (FMath::Abs(DeltaRotator.Yaw < 180))  {
+	
+		Turret->Rotate(DeltaRotator.Yaw);
 	}
 	else {
-		Turret->Rotate(DeltaRotator.Yaw);
+		Turret->Rotate(-DeltaRotator.Yaw);
 
 	}
 
@@ -124,6 +124,7 @@ void UTankAimingComponent::Fire()
 		// Spawn a projectile at the barrel's muzzle socket.
 		auto SocketLocation = Barrel->GetSocketLocation(FName("Muzzle"));
 		auto SocketRotation = Barrel->GetSocketRotation(FName("Muzzle"));
+	
 		auto Projectile = GetWorld()->SpawnActor<AProjectile>(*ProjectileBlueprint, SocketLocation, SocketRotation);
 		if (!ensure(Projectile))
 		{
