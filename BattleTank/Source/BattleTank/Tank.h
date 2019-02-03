@@ -18,6 +18,9 @@ public:
 	// Sets default values for this pawn's properties
 	ATank();
 	virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController * EventInstigator, AActor * DamageCauser) override;
+	// Returns current health as a percentage of hitpoints between 0 and 1
+	UFUNCTION(BlueprintPure, Category="Health")
+	float GetHealthPercent() const;
 
 protected:
 	// Called when the game starts or when spawned
