@@ -41,6 +41,9 @@ AProjectile::AProjectile()
 		return;
 	}
 
+	ExplosionForce = CreateDefaultSubobject<URadialForceComponent>(FName("Explosion Force"));
+	ExplosionForce->AttachToComponent(RootComponent, AttachXformRules);
+	ExplosionForce->bAutoActivate = false;
 }
 
 void AProjectile::LaunchProjectile(float LaunchSpeed)
@@ -63,5 +66,7 @@ void AProjectile::OnHit(UPrimitiveComponent * HitComp, AActor * OtherActor, UPri
 {
 	LaunchBlast->Deactivate();
 	ImpactBlast->Activate();
+	ExplosionForce->Activate();
+	ExplosionForce->FireImpulse(); // applies the force.
 }
 
