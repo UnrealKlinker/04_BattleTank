@@ -63,7 +63,7 @@ public:
 	EFiringStatus GetFiringStatus() const;
 
 protected:
-	UPROPERTY(EditDefaultsOnly, Category = "Setup") /// this make it editable on the blueprint only
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Setup") /// this make it editable on the blueprint only
 		TSubclassOf<AProjectile> ProjectileBlueprint; // consider https://docs.unrealengine.com/latest/INT/Programming/UnrealArchitecture/TSubclassOf
 
 	UPROPERTY(BlueprintReadOnly, Category = "State")

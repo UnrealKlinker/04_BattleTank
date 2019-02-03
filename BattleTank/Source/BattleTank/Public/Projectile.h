@@ -22,6 +22,7 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	void OnTimerExpire();
 
 private:
 	UFUNCTION()
@@ -35,6 +36,8 @@ private:
 		UParticleSystemComponent *ImpactBlast = nullptr;
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 		URadialForceComponent* ExplosionForce = nullptr;
+	UPROPERTY(EditAnywhere, Category = "Firing")
+		float DestroyDelay = 3; //Time to reload the cannon in seconds
 
 
 };
