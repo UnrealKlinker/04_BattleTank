@@ -38,6 +38,8 @@ private:
 		URadialForceComponent* ExplosionForce = nullptr;
 	UPROPERTY(EditAnywhere, Category = "Firing")
 		float DestroyDelay = 3; //Time to reload the cannon in seconds
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+		float ProjectileDamage = 17.f;
 
 
 };
