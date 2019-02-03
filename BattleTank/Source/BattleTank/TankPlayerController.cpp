@@ -1,6 +1,7 @@
 // Copyright Paul Klinker, 2019.
 
 #include "TankPlayerController.h"
+#include "Tank.h"
 #include "Engine/World.h"
 
 
@@ -15,6 +16,10 @@ void ATankPlayerController::BeginPlay()
 		return;
 	}
 	FoundAimingComponent(TankAimingComponent);
+	// Register for death event
+	auto ThisTank = Cast<ATank>(GetPawn());
+	ThisTank->OnDeath.AddUniqueDynamic(this, &ATankPlayerController::OnPlayerDeath);
+
 }
 
 	// Aim towards crosshair
@@ -107,7 +112,9 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection, FVec
 	
 
 }
-
+void ATankPlayerController::OnPlayerDeath() {
+	UE_LOG(LogTemp, Warning, TEXT("Player tank received death call."));
+}
 
 
 

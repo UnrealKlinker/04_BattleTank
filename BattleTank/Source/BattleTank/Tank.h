@@ -5,9 +5,8 @@
 #include "GameFramework/Pawn.h"
 #include "Tank.generated.h" // must be last include
 
-// forward declarations
-class UTankBarrel;
-class AProjectile;
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FTankDelegate);
+
 
 UCLASS()
 class BATTLETANK_API ATank : public APawn
@@ -21,6 +20,7 @@ public:
 	// Returns current health as a percentage of hitpoints between 0 and 1
 	UFUNCTION(BlueprintPure, Category="Health")
 	float GetHealthPercent() const;
+	FTankDelegate OnDeath;
 
 protected:
 	// Called when the game starts or when spawned
@@ -30,4 +30,5 @@ protected:
 		int32 HitPoints = 100;
 	UPROPERTY(VisibleAnywhere, Category = "Health")
 		int32 CurrentHealth = HitPoints;
+
 };

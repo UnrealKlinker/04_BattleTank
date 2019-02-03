@@ -44,5 +44,7 @@ private:
 
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
+	UFUNCTION()  // Must be a UFUNCTION to get called when tank is destroyed.
+		void OnPlayerDeath();
 
 };

@@ -17,7 +17,10 @@ float ATank::TakeDamage(float DamageAmount, FDamageEvent const & DamageEvent, AC
 	CurrentHealth -= DamageToApply;
 	auto Time = GetWorld()->GetTimeSeconds();
 	UE_LOG(LogTemp, Warning, TEXT("%f: DamageToApply: %i, DamageAmount: %f, CurrentHealth: %i"), Time, DamageToApply, DamageAmount, CurrentHealth);
-
+	if (CurrentHealth <= 0)
+	{
+		OnDeath.Broadcast();
+	}
 	return DamageToApply;
 }
 

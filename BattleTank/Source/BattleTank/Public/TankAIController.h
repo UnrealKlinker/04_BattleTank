@@ -16,8 +16,6 @@ class BATTLETANK_API ATankAIController : public AAIController
 	GENERATED_BODY()
 	
 public:
-	virtual void BeginPlay() override;
-	virtual void Tick(float DeltaTime) override;
 
 protected:
 
@@ -30,5 +28,13 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Setup")
 	float AcceptanceRadius = 3000; 
+
+private: 
+	virtual void SetPawn(APawn* InPawn) override; // this gets called when the pawn is possessed.
+	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaTime) override;
+
+	UFUNCTION()  // Must be a UFUNCTION to get called when tank is destroyed.
+		void OnPossessedTankDeath();
 
 };
