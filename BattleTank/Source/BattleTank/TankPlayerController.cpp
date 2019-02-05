@@ -112,8 +112,11 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection, FVec
 	
 
 }
+
+// Player tank received death call.
 void ATankPlayerController::OnPlayerDeath() {
-	UE_LOG(LogTemp, Warning, TEXT("Player tank received death call."));
+	//UE_LOG(LogTemp, Warning, TEXT("Player tank received death call."));
+	StartSpectatingOnly();
 }
 
 

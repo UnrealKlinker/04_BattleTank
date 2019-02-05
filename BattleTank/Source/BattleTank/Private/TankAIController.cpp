@@ -37,18 +37,20 @@ void ATankAIController::Tick(float DeltaTime)
 		return;
 	}
 
-	if (ensure(ThisTank && PlayerTank))
+	if (ensure(ThisTank))
 	{
-		// TODO Move towards the player
-		MoveToActor(PlayerTank, AcceptanceRadius, true, true, false);
-		auto TankAimingComponent = ThisTank->FindComponentByClass<UTankAimingComponent>();
-		// Aim towards the player
-		TankAimingComponent->AimAt(PlayerTank->GetActorLocation());
+		if (PlayerTank) { // don't ensure here because the PlayerTank will be null once it is destroyed.
+			// TODO Move towards the player
+			MoveToActor(PlayerTank, AcceptanceRadius, true, true, false);
+			auto TankAimingComponent = ThisTank->FindComponentByClass<UTankAimingComponent>();
+			// Aim towards the player
+			TankAimingComponent->AimAt(PlayerTank->GetActorLocation());
 
-		// If locked then fire
-		if (TankAimingComponent->GetFiringStatus() == EFiringStatus::EFS_Locked)
-		{
-			TankAimingComponent->Fire();
+			// If locked then fire
+			if (TankAimingComponent->GetFiringStatus() == EFiringStatus::EFS_Locked)
+			{
+				TankAimingComponent->Fire();
+			}
 		}
 	}
 }
@@ -65,6 +67,9 @@ void ATankAIController::SetPawn(APawn * InPawn)
 
 	}
 }
+
+// AI tank received death call.
 void ATankAIController::OnPossessedTankDeath() {
 	UE_LOG(LogTemp, Warning, TEXT("AI tank received death call."));
+	GetPawn()->DetachFromControllerPendingDestroy();
 }
