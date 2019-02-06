@@ -16,7 +16,7 @@ float ATank::TakeDamage(float DamageAmount, FDamageEvent const & DamageEvent, AC
 	int32 DamageToApply = FMath::Clamp<int32>(DamagePoints, 0, CurrentHealth);
 	CurrentHealth -= DamageToApply;
 	auto Time = GetWorld()->GetTimeSeconds();
-	UE_LOG(LogTemp, Warning, TEXT("%f: DamageToApply: %i, DamageAmount: %f, CurrentHealth: %i"), Time, DamageToApply, DamageAmount, CurrentHealth);
+	// UE_LOG(LogTemp, Warning, TEXT("%f: DamageToApply: %i, DamageAmount: %f, CurrentHealth: %i"), Time, DamageToApply, DamageAmount, CurrentHealth);
 	if (CurrentHealth <= 0)
 	{
 		OnDeath.Broadcast();

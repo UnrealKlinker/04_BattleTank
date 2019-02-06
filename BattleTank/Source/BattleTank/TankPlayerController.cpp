@@ -101,7 +101,7 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection, FVec
 		OUT ObjectHit, 
 		StartLocation, 
 		LineTraceEnd, 
-		ECollisionChannel::ECC_Visibility)) //line trace succeeds
+		ECollisionChannel::ECC_Camera)) //line trace succeeds - use camera to avoid hitting health bar
 		{
 			//set hit location
 			HitLocation = ObjectHit.Location;
