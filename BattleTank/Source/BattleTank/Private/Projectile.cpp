@@ -1,6 +1,9 @@
 // Copyright Paul Klinker, 2019.
 
 #include "../Public/Projectile.h"
+#include "Engine/World.h"
+#include "Public/TimerManager.h"
+#include "GameFramework/DamageType.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values
@@ -88,6 +91,7 @@ void AProjectile::OnHit(UPrimitiveComponent * HitComp, AActor * OtherActor, UPri
 		TArray<AActor*>() // ignore so damage all actors.
 	);
 	FTimerHandle TimerHandle;
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AProjectile::OnTimerExpire, DestroyDelay);
+	UWorld *TheWorld = GetWorld();
+	TheWorld->GetTimerManager().SetTimer(TimerHandle, this, &AProjectile::OnTimerExpire, DestroyDelay);
 }
 
