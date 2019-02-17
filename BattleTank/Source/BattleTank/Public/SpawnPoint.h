@@ -15,18 +15,16 @@ class BATTLETANK_API USpawnPoint : public USceneComponent
 public:	
 	// Sets default values for this component's properties
 	USpawnPoint();
+	// Called every frame
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
 private:
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Setup") /// this make it editable on the blueprint only
-//		TSubclassOf<AActor> SpawnClass; 
+	UPROPERTY(EditAnywhere, Category = "Setup") /// this make it editable on the blueprint only
+		TSubclassOf<AActor> SpawnClass;
 
-public:	
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-		
 };

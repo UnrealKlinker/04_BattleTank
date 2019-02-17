@@ -1,6 +1,8 @@
 // Copyright Paul Klinker, 2019.
 
 #include "SpawnPoint.h"
+#include "Kismet/GameplayStatics.h"
+#include "GameFramework/Actor.h"
 
 // Sets default values for this component's properties
 USpawnPoint::USpawnPoint()
@@ -17,13 +19,14 @@ USpawnPoint::USpawnPoint()
 void USpawnPoint::BeginPlay()
 {
 	Super::BeginPlay();
-	//auto NewActor = GetWorld()->SpawnActor<AActor>(*SpawnClass);
-	//if (!ensure(NewActor))
-	//{
-	//	UE_LOG(LogTemp, Warning, TEXT("UTankAimingComponent projectile is missing."));
-	//	return;
-//	}
-//	NewActor->AttachToComponent(this, FAttachmentTransformRules::KeepRelativeTransform);
+	auto NewActor = GetWorld()->SpawnActorDeferred<AActor>(*SpawnClass, GetComponentTransform());
+	if (!ensure(NewActor))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("USpawnPoint new actor is missing."));
+		return;
+	}
+	NewActor->AttachToComponent(this, FAttachmentTransformRules::KeepWorldTransform);
+	UGameplayStatics::FinishSpawningActor(NewActor, GetComponentTransform());
 
 	// ...
 	

@@ -1,6 +1,7 @@
 // Copyright Paul Klinker, 2019.
 
 #include "SprungWheel.h"
+//#include "Tank.h"
 
 // Sets default values
 ASprungWheel::ASprungWheel()
@@ -17,11 +18,11 @@ ASprungWheel::ASprungWheel()
 		UE_LOG(LogTemp, Warning, TEXT("ShockAbsorber Collsion Mesh can't be created."));
 		return;
 	}
-	Spring->SetupAttachment(ShockAbsorber);
-	Spring->SetConstrainedComponents(ShockAbsorber, FName("ShockAbsorber"), Wheel, FName("Wheel"));
+	ShockAbsorber->SetupAttachment(Spring);
+	//ShockAbsorber->SetConstrainedComponents(ShockAbsorber, FName("ShockAbsorber"), Wheel, FName("Wheel"));
 
 	Wheel = CreateDefaultSubobject<UStaticMeshComponent>(FName("Wheel"));
-	Wheel->SetupAttachment(ShockAbsorber);
+	Wheel->SetupAttachment(Spring);
 
 }
 
@@ -29,7 +30,15 @@ ASprungWheel::ASprungWheel()
 void ASprungWheel::BeginPlay()
 {
 	Super::BeginPlay();
-	//ATank TheTank = GetAttachParentActor(); gets the tank
+	// gets the parent actor
+	if (GetAttachParentActor())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Not Null"));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Sprung tank is Null"));
+	}
 	//AttachToComponent
 	
 }
