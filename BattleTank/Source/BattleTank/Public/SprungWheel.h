@@ -24,8 +24,7 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-	UPROPERTY(VisibleAnywhere, Category = "Components")
-		UStaticMeshComponent *ShockAbsorber = nullptr;
+
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 		UStaticMeshComponent *Wheel = nullptr;
 	UPROPERTY(VisibleAnywhere, Category = "Components")
