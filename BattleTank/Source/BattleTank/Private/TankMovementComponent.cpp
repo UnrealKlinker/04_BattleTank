@@ -48,7 +48,6 @@ void UTankMovementComponent::IntendTurnRight(float Throw)
 	{
 		return;
 	}
-	Throw = Throw * TrackTurnForceMultiplier;
 	LeftTrack->SetThrottle(-Throw);
 	RightTrack->SetThrottle(Throw);
 
@@ -59,7 +58,6 @@ void UTankMovementComponent::IntendTurnLeft(float Throw)
 	{
 		return;
 	}
-	Throw = Throw * TrackTurnForceMultiplier;
 	LeftTrack->SetThrottle(Throw);
 	RightTrack->SetThrottle(-Throw);
 

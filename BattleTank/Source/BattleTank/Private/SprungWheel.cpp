@@ -53,3 +53,13 @@ void ASprungWheel::Tick(float DeltaTime)
 
 }
 
+void ASprungWheel::AddDrivingForce(float ForceMagnitude)
+{
+	// TODO only apply when on ground
+	Wheel->AddForce(Axle->GetForwardVector()*ForceMagnitude);
+}
+void ASprungWheel::AddDrivingForce(FVector Force)
+{
+	// TODO only apply when on ground
+	Wheel->AddForce(Force);
+}

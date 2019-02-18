@@ -6,6 +6,7 @@
 #include "Components/StaticMeshComponent.h"
 #include "TankTrack.generated.h"
 
+class ASprungWheel;
 /**
  * Used to maneuver the tank
  * Look at: https://forums.unrealengine.com/community/work-in-progress/54936-assets-open-source-tanks-tracks-and-n-wheeled-vehicles
@@ -27,13 +28,9 @@ public:
 	/// assume 40 Ton tank and 0-60 in 10 seconds. F=ma
 private:
 
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-	void ApplySidewaysForce();
 	FVector ForceApplied;
-	UFUNCTION()
-		void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
-	void DriveTrack();
+	void DriveTrack(float CurrentThrottle);
 	float CurrentThrottle = 0.0;
+	TArray<ASprungWheel*> GetWheels() const;
 
 };

@@ -1,8 +1,10 @@
 // Copyright Paul Klinker, 2019.
 
-#include "SpawnPoint.h"
+#include "../Public/SpawnPoint.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/Actor.h"
+#include "Components/SceneComponent.h"
+#include "Containers/Array.h"
 
 // Sets default values for this component's properties
 USpawnPoint::USpawnPoint()
@@ -19,14 +21,14 @@ USpawnPoint::USpawnPoint()
 void USpawnPoint::BeginPlay()
 {
 	Super::BeginPlay();
-	auto NewActor = GetWorld()->SpawnActorDeferred<AActor>(*SpawnClass, GetComponentTransform());
-	if (!ensure(NewActor))
+	SpawnPointActor = GetWorld()->SpawnActorDeferred<AActor>(*SpawnClass, GetComponentTransform());
+	if (!ensure(SpawnPointActor))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("USpawnPoint new actor is missing."));
 		return;
 	}
-	NewActor->AttachToComponent(this, FAttachmentTransformRules::KeepWorldTransform);
-	UGameplayStatics::FinishSpawningActor(NewActor, GetComponentTransform());
+	SpawnPointActor->AttachToComponent(this, FAttachmentTransformRules::KeepWorldTransform);
+	UGameplayStatics::FinishSpawningActor(SpawnPointActor, GetComponentTransform());
 
 	// ...
 	
@@ -37,7 +39,12 @@ void USpawnPoint::BeginPlay()
 void USpawnPoint::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// ...
 }
+
+AActor* USpawnPoint::GetGeneratedActor() const
+{
+	return SpawnPointActor;
+}
+
+
 

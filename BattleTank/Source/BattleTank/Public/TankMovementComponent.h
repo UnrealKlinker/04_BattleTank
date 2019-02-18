@@ -32,10 +32,6 @@ public:
 	/** path following: request new velocity */
 	virtual void RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed) override;
 
-	// Multiplier to help turn the tank, especially when stopped. This is multiplied by the force.
-	UPROPERTY(EditDefaultsOnly, Category = "Setup")
-    float TrackTurnForceMultiplier = 2;
-
 private:
 	UTankTrack *LeftTrack = nullptr;
 	UTankTrack *RightTrack = nullptr;
