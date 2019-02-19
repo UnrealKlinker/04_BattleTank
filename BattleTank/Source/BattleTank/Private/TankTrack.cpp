@@ -28,12 +28,14 @@ void UTankTrack::DriveTrack(float CurrentThrottle)
 {
 	//TODO clamp the throttle to the range
 	/// getting forward vector of the track
-		ForceApplied = GetForwardVector() * CurrentThrottle*TrackMaxDrivingForce;
+	//	ForceApplied = GetForwardVector() * CurrentThrottle*TrackMaxDrivingForce;
 	TArray<ASprungWheel*> Wheels = GetWheels();
-	auto ForcePerWheel = ForceApplied / Wheels.Num();
+//	auto ForcePerWheel = ForceApplied / Wheels.Num();
+	UE_LOG(LogTemp, Warning, TEXT("CurrentThrottle - %f"), CurrentThrottle);
+	auto  ForcePerWheel = CurrentThrottle * TrackMaxDrivingForce/ Wheels.Num();
 	for (ASprungWheel* Wheel : Wheels)
 	{
-		Wheel->AddDrivingForce(ForcePerWheel);
+		Wheel->AddDrivingForce(TrackMaxDrivingForce, ForcePerWheel);
 	}
 	
 	/// auto Name = GetName();

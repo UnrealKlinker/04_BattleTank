@@ -22,9 +22,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	// adds a positive force to drive the wheel forward and a negative force for reverse
-	void AddDrivingForce(float ForceMagnitude);
-	// adds a positive force to drive the wheel forward and a negative force for reverse
-	void AddDrivingForce(FVector Force);
+	void AddDrivingForce(float TrackMaxDrivingForce, float ForceMagnitude);
 
 
 protected:
@@ -38,5 +36,9 @@ protected:
 		UPhysicsConstraintComponent *AxleWheelConstraint = nullptr;
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 		UPhysicsConstraintComponent *Spring = nullptr;
-
+private:
+	UFUNCTION()
+	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+	float TotalForceMagnitudeThisFrame = 0.;
+	void ApplyForce();
 };
